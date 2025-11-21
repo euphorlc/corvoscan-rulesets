@@ -1,0 +1,30 @@
+{
+  "host_addresses_rule": [
+    {
+      "type": "multiple_a",
+      "min_count": 2,
+      "hosts": [],               
+      "severity": "Info",
+      "message": "Traffic may be spread across servers or through a content delivery network"
+    }
+  ],
+
+  "name_servers_rule": [
+    {
+      "type": "default_ns",
+      "hosts": [],
+      "severity": "Medium",
+      "message": "Using default/ISP name servers may expose DNS queries to eavesdropping or manipulation"
+    }
+  ],    
+
+  "rules": [],
+  "version_rules": [],
+  "subdomain_threshold": 100,
+  "defaults": {
+    "severity": "Info",
+    "message": "No specific rule matched. Review record manually."
+  }
+}
+
+
