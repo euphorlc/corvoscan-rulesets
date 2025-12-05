@@ -3,9 +3,9 @@
     {
       "type": "multiple_a",
       "min_count": 2,
-      "hosts": [],               
+      "hosts": [],
       "severity": "Info",
-      "message": "Traffic may be spread across servers or through a content delivery network"
+      "message": "Multiple A records detected — verify that load balancing or CDN routing is intentional and ensure all backend nodes are patched and configured consistently."
     }
   ],
 
@@ -14,17 +14,17 @@
       "type": "default_ns",
       "hosts": [],
       "severity": "Medium",
-      "message": "Using default/ISP name servers may expose DNS queries to eavesdropping or manipulation"
+      "message": "Default or ISP-provided name servers in use — switch to managed or hardened DNS providers and enforce DNSSEC to reduce manipulation and interception risks."
     }
-  ],    
+  ],
 
   "rules": [],
   "version_rules": [],
+
   "subdomain_threshold": 100,
+
   "defaults": {
     "severity": "Info",
-    "message": "No specific rule matched. Review record manually."
+    "message": "No rule matched — confirm DNS records, verify exposure is intended, and review configuration for potential misconfigurations."
   }
 }
-
-

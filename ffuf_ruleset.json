@@ -1,100 +1,50 @@
 {
-    "path_rules": [
-        {
-            "status": 200,
-            "path": "^admin/?$",
-            "severity": "High",
-            "message": "Admin area is accessible."
-        },
-        {
-            "status": 200,
-            "path": "^login/?$",
-            "severity": "Medium",
-            "message": "Login page exposed."
-        },
-        {
-            "status": 200,
-            "path": "^(?:backup|.*\\.bak)$",
-            "severity": "High",
-            "message": "Backup file or folder exposed."
-        },
-        {
-            "status": 200,
-            "path": "^(?:config|settings|setup)/?$",
-            "severity": "High",
-            "message": "Config folder exposed."
-        },
-        {
-            "status": 200,
-            "path": "^(?:db|database)/?$",
-            "severity": "High",
-            "message": "Database-related file or folder exposed."
-        },
-        {
-            "status": 200,
-            "path": "^\\.git/?$",
-            "severity": "High",
-            "message": "Git repository is accessible."
-        },
-        {
-            "status": 200,
-            "path": "^\\.env$",
-            "severity": "Critical",
-            "message": "Environment file exposed."
-        },
-        {
-            "status": 200,
-            "path": "^logs?/?$",
-            "severity": "Medium",
-            "message": "Log files accessible."
-        },
-        {
-            "status": 200,
-            "path": "^(?:test|dev|staging)/?$",
-            "severity": "Medium",
-            "message": "Test or dev folder accessible."
-        },
-        {
-            "status": 200,
-            "path": "^phpinfo\\.php$",
-            "severity": "High",
-            "message": "phpinfo exposed."
-        },
-        {
-            "status": 200,
-            "path": "^(?:debug|debugger|debug\\.php)$",
-            "severity": "High",
-            "message": "Debug endpoints exposed."
-        },
-        {
-            "status": 200,
-            "path": "^server-status$",
-            "severity": "High",
-            "message": "Apache server-status exposed."
-        },
-        {
-            "status": 200,
-            "path": "^(?:\\.svn|\\.hg|\\.DS_Store)$",
-            "severity": "High",
-            "message": "Version control or hidden metadata exposed."
-        },
-        {
-            "status": 200,
-            "path": "^(?:uploads|files|media)/?$",
-            "severity": "Medium",
-            "message": "Public upload directory accessible."
-        },
-        {
-            "status": 301,
-            "path": "^images(?:/.*)?$",
-            "severity": "Low",
-            "message": "Test only!"
-        },
-        {
-            "status": 200,
-            "path": "^(?:shell\\.php|cmd\\.php)$",
-            "severity": "High",
-            "message": "Possible web shell exposed."
-        }
-    ]
+  "path_rules": [
+    {"status":200,"path":"^admin/?$","severity":"High","message":"Admin area is accessible — restrict access, enforce authentication, and monitor activity."},
+    {"status":200,"path":"^login/?$","severity":"Medium","message":"Login page exposed — enforce strong passwords, rate limiting, and HTTPS."},
+    {"status":200,"path":"^(?:backup|.*\\.bak)$","severity":"High","message":"Backup file or folder exposed — remove sensitive files from web root and restrict access."},
+    {"status":200,"path":"^(?:config|settings|setup)/?$","severity":"High","message":"Config folder exposed — restrict access and protect sensitive configuration."},
+    {"status":200,"path":"^(?:db|database)/?$","severity":"High","message":"Database-related file or folder exposed — restrict network access and authentication."},
+    {"status":200,"path":"^\\.git/?$","severity":"High","message":"Git repository is accessible — restrict access and remove from public directories."},
+    {"status":200,"path":"^\\.env$","severity":"Critical","message":"Environment file exposed — move outside web root and enforce file permissions."},
+    {"status":200,"path":"^logs?/?$","severity":"Medium","message":"Log files accessible — restrict access and remove sensitive info."},
+    {"status":200,"path":"^(?:test|dev|staging)/?$","severity":"Medium","message":"Test or dev folder accessible — restrict access and disable in production."},
+    {"status":200,"path":"^phpinfo\\.php$","severity":"High","message":"phpinfo exposed — remove file and restrict access to internal use."},
+    {"status":200,"path":"^(?:debug|debugger|debug\\.php)$","severity":"High","message":"Debug endpoints exposed — disable debug mode and restrict access."},
+    {"status":200,"path":"^server-status$","severity":"High","message":"Apache server-status exposed — restrict to trusted IPs and require authentication."},
+    {"status":200,"path":"^(?:\\.svn|\\.hg|\\.DS_Store)$","severity":"High","message":"Version control or hidden metadata exposed — remove from web root."},
+    {"status":200,"path":"^(?:uploads|files|media)/?$","severity":"Medium","message":"Public upload directory accessible — restrict access and validate uploads."},
+    {"status":301,"path":"^images(?:/.*)?$","severity":"Low","message":"Test only — verify directory does not contain sensitive files."},
+    {"status":200,"path":"^(?:shell\\.php|cmd\\.php)$","severity":"High","message":"Possible web shell exposed — remove immediately and audit server."},
+
+    
+    {"status":200,"path":"^composer\\.json$","severity":"High","message":"composer.json exposed — remove from public directories and restrict access."},
+    {"status":200,"path":"^composer\\.lock$","severity":"High","message":"composer.lock exposed — remove from public directories and restrict access."},
+    {"status":200,"path":"^package\\.json$","severity":"High","message":"package.json exposed — move file out of web root and restrict access."},
+    {"status":200,"path":"^package-lock\\.json$","severity":"High","message":"package-lock.json exposed — move file out of web root and restrict access."},
+    {"status":200,"path":"^yarn\\.lock$","severity":"High","message":"yarn.lock exposed — move file out of web root and restrict access."},
+    {"status":200,"path":"^node_modules/?$","severity":"High","message":"Node modules folder exposed — remove from public directories and restrict access."},
+    {"status":200,"path":"^api/?$","severity":"Medium","message":"API endpoint directory exposed — restrict access and enforce authentication."},
+    {"status":200,"path":"^api-docs/?$","severity":"Medium","message":"API documentation exposed — restrict access and require authentication."},
+    {"status":200,"path":"^swagger(?:\\.json|\\.yaml)?$","severity":"High","message":"Swagger/OpenAPI schema exposed — restrict access and enforce authentication."},
+    {"status":200,"path":"^backup\\.zip$","severity":"Critical","message":"Backup archive exposed — remove from web root and restrict access."},
+    {"status":200,"path":"^backup\\.tar(?:\\.gz)?$","severity":"Critical","message":"Backup archive exposed — remove from web root and restrict access."},
+    {"status":200,"path":"^db\\.sql$","severity":"Critical","message":"Database dump exposed — remove from public directories and enforce access control."},
+    {"status":200,"path":"^config\\.php$","severity":"High","message":"Config file exposed — move outside web root and restrict permissions."},
+    {"status":200,"path":"^settings\\.php$","severity":"High","message":"Settings file exposed — move outside web root and enforce access control."},
+    {"status":200,"path":"^database\\.php$","severity":"High","message":"Database config exposed — remove from public directories and enforce authentication."},
+    {"status":200,"path":"^\\.well-known/?$","severity":"Medium","message":".well-known directory exposed — restrict access where possible."},
+    {"status":200,"path":"^\\.vscode/?$","severity":"High","message":"VSCode project folder exposed — remove from web root and restrict access."},
+    {"status":200,"path":"^\\.idea/?$","severity":"High","message":"IDE config folder exposed — remove from web root and restrict access."},
+    {"status":200,"path":"^sitemap\\.xml$","severity":"Low","message":"Sitemap accessible — verify it does not reveal sensitive paths."},
+    {"status":200,"path":"^robots\\.txt$","severity":"Low","message":"robots.txt accessible — review disallowed paths and restrict sensitive endpoints."},
+    {"status":200,"path":"^dockerfile$","severity":"High","message":"Dockerfile exposed — remove from public directories and restrict access."},
+    {"status":200,"path":"^docker-compose\\.yml$","severity":"Critical","message":"docker-compose exposed — remove from public directories and restrict access."},
+    {"status":200,"path":"^secret(?:s)?\\.json$","severity":"Critical","message":"Secret JSON file exposed — remove from web root and enforce access control."},
+    {"status":200,"path":"^keys?\\.(?:json|pem)$","severity":"Critical","message":"Key file exposed — remove from public directories and secure keys."},
+    {"status":200,"path":"^adminer\\.php$","severity":"High","message":"Adminer panel exposed — restrict access and enforce authentication."},
+    {"status":200,"path":"^phpmyadmin/?$","severity":"High","message":"phpMyAdmin exposed — restrict access, enforce authentication, and update to latest version."},
+    {"status":200,"path":"^test\\.php$","severity":"Medium","message":"Test PHP file exposed — remove or restrict access to production environment."},
+    {"status":200,"path":"^info\\.php$","severity":"High","message":"Info script exposed — remove file and restrict access to internal use only."}
+  ]
 }

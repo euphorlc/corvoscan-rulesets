@@ -1,108 +1,271 @@
 {
-  "registrar_rules": [
+  "server_rule": [
     {
-      "pattern": "(?i)verisign",
-      "message": "Registrar is Verisign — generally trusted but verify domain controls and DNSSEC.",
-      "severity": "Low"
+      "pattern": "Varnish",
+      "severity": "Medium",
+      "message": "Harden Varnish: review VCL, restrict purge endpoints, validate/sanitize forwarded headers and implement cache key pinning."
     },
-
     {
-      "pattern": "(?i)(1api|bizcn|publicdomainregistry|eranetworks|namejuice|domainnameman|galcomm)",
-      "message": "Registrar appears in outdated or low-security list → possible domain hijack or DNS tampering risk.",
-      "severity": "Medium"
+      "pattern": "nginx",
+      "severity": "Low",
+      "message": "Harden nginx: remove default pages, disable unused modules, enforce strict file permissions and enable automatic updates."
     },
-
     {
-      "pattern": "^(?!.*(namecheap|godaddy|google|cloudflare|gandi|porkbun|dynadot|markmonitor|csc|amazon registrar)).*$",
-      "message": "Registrar not in major secure registrar list → verify domain lock, 2FA and monitoring.",
-      "severity": "Low"
+      "pattern": "Apache",
+      "severity": "Low",
+      "message": "Harden Apache: disable directory listings, remove sample configs, enable security headers and keep modules up to date."
     },
-
     {
-      "pattern": "DS-RDATA: *$",
-      "message": "DNSSEC appears absent → possible DNS spoofing or cache poisoning exposure.",
-      "severity": "High"
+      "pattern": "Microsoft-IIS|IIS",
+      "severity": "Medium",
+      "message": "Harden IIS: apply latest patches, remove default content, restrict management endpoints and enforce least-privilege access controls."
     },
-
     {
-      "pattern": "(?i)(bizcn|volgahost|above\\.com|eranetworks|galcomm|alpnames)",
-      "message": "Registrar associated with high-abuse domains → may indicate lax security controls.",
-      "severity": "Medium"
-    },
-
-    {
-      "pattern": "Registrar: *$",
-      "message": "Registrar field missing or empty → WHOIS suppression or misconfiguration detected.",
-      "severity": "Medium"
-    },
-
-    {
-      "pattern": "(?i)(fax|facsimile)",
-      "message": "Registrar uses outdated contact fields → backend systems may be old or less secure.",
-      "severity": "Low"
-    },
-
-    {
-      "pattern": "(?i)(russia|china|ukraine|seychelles|british virgin islands)",
-      "message": "Registrar located in high-risk jurisdiction → review domain security posture.",
-      "severity": "Medium"
-    },
-
-    {
-      "pattern": "(?i)(Updated:.*202[3-5]-[01][0-9]-[0-3][0-9])",
-      "message": "WHOIS recently updated → verify registrar or DNS changes were intentional.",
-      "severity": "Low"
-    },
-
-    {
-      "pattern": "(?i)(freenom|dot\\.tk|dot\\.ml|dot\\.cf|dot\\.ga)",
-      "message": "Free-domain registrar detected → historically weak identity verification.",
-      "severity": "Low"
-    },
-
-    {
-      "pattern": ".+",
-      "severity": "Info",
-      "message": "Test rule: registrar present"
+      "pattern": "x-powered-by|X-Powered-By",
+      "severity": "Low",
+      "message": "Remove X-Powered-By: disable framework/server version headers in config to reduce fingerprinting and targeted attacks."
     }
   ],
 
-  "age_rules": [
-
+  "security_header_rule": [
     {
-      "pattern": "(?i)Creation Date: (\\d{4})-(\\d{2})-(\\d{2})",
-      "message": "Domain is very new (<1 year old) → may be transient/test domain; verify trustworthiness.",
-      "severity": "High",
-      "condition": "current_year - \\1 < 1"
-    },
-
-    {
-      "pattern": "(?i)Creation Date: (\\d{4})-(\\d{2})-(\\d{2})",
-      "message": "Domain is relatively new (1–3 years old) → moderate risk; could be recently registered for malicious activity.",
+      "pattern": "Missing: Strict-Transport-Security|missing HSTS|no Strict-Transport-Security",
       "severity": "Medium",
-      "condition": "current_year - \\1 >= 1 && current_year - \\1 <= 3"
+      "message": "Enable HSTS: add Strict-Transport-Security with appropriate max-age, includeSubDomains and consider 'preload' after testing."
     },
-
     {
-      "pattern": "(?i)Creation Date: (\\d{4})-(\\d{2})-(\\d{2})",
-      "message": "Domain is mature (>3 years old) → lower risk, likely stable/legitimate.",
-      "severity": "Low",
-      "condition": "current_year - \\1 > 3"
-    },
-
-    {
-      "pattern": "creation",
-      "condition": "age > 30",
+      "pattern": "Missing: Content-Security-Policy|missing Content-Security-Policy|no Content-Security-Policy",
       "severity": "Medium",
-      "message": "Test rule: domain created more than 30 years ago"
+      "message": "Implement CSP: deploy a restrictive Content-Security-Policy (start report-only), review violations and tighten rules to mitigate XSS."
     },
-
     {
-      "pattern": "updated",
-      "condition": "current_year - year <= 2",
+      "pattern": "Missing: X-Frame-Options|missing X-Frame-Options|no X-Frame-Options",
+      "severity": "Medium",
+      "message": "Prevent clickjacking: add X-Frame-Options or use CSP frame-ancestors to restrict which origins may frame the site."
+    },
+    {
+      "pattern": "Missing: X-Content-Type-Options|missing X-Content-Type-Options",
       "severity": "Low",
-      "message": "Test rule: domain updated within the last 2 years"
+      "message": "Set X-Content-Type-Options: add 'nosniff' to responses to prevent MIME-type sniffing."
+    },
+    {
+      "pattern": "Missing: Referrer-Policy|missing Referrer-Policy",
+      "severity": "Low",
+      "message": "Define Referrer-Policy: add an appropriate policy (e.g., strict-origin-when-cross-origin) to limit referrer leakage."
     }
-  ]
+  ],
 
+  "tls_ssl_rule": [
+    {
+      "pattern": "self-signed|Self-Signed",
+      "severity": "High",
+      "message": "Replace self-signed cert: obtain a trusted CA certificate and configure TLS to present only valid chains."
+    },
+    {
+      "pattern": "expired certificate|Certificate expired",
+      "severity": "High",
+      "message": "Renew certificate: replace expired certs immediately and automate renewals (e.g., ACME) and monitoring."
+    },
+    {
+      "pattern": "TLS 1.0|SSLv3|SSL 3.0|TLSv1",
+      "severity": "High",
+      "message": "Disable weak protocols: configure server to support TLS 1.2+ (prefer TLS1.3), remove SSLv3/TLS1.0 and test with a TLS scanner."
+    },
+    {
+      "pattern": "missing HSTS|preload not present|includeSubDomains not present",
+      "severity": "Medium",
+      "message": "Enforce HSTS correctly: add Strict-Transport-Security with includeSubDomains and evaluate preload after verification."
+    }
+  ],
+
+  "cookie_rule": [
+    {
+      "pattern": "Cookie",
+      "severity": "Medium",
+      "message": "Harden cookies: set Secure, HttpOnly and appropriate SameSite attributes; scope paths and apply short expiries for sensitive cookies."
+    },
+    {
+      "pattern": "session|sessid|auth|token",
+      "severity": "High",
+      "message": "Protect session cookies: enforce Secure/HttpOnly/SameSite, rotate identifiers on privilege change, validate expiry and implement session invalidation."
+    }
+  ],
+
+  "uncommon_header_rule": [
+    {
+      "pattern": "x-served-by",
+      "severity": "Low",
+      "message": "Remove internal headers: strip or mask X-Served-By to avoid disclosing internal node identifiers."
+    },
+    {
+      "pattern": "x-timer",
+      "severity": "Low",
+      "message": "Disable diagnostic headers: remove X-Timer to avoid exposing backend timing and profiling information."
+    },
+    {
+      "pattern": "x-cache-hits",
+      "severity": "Low",
+      "message": "Limit cache detail headers: remove or restrict X-Cache-Hits to prevent leaking cache behavior and hit ratios."
+    },
+    {
+      "pattern": "server:.*\\(internal|trace|debug",
+      "severity": "Low",
+      "message": "Sanitize Server header: remove debug/internal text and avoid exposing module versions."
+    }
+  ],
+
+  "redirect_rule": [
+    {
+      "pattern": "301 Moved Permanently|302 Found|307 Temporary Redirect",
+      "severity": "Low",
+      "message": "Validate redirects: enforce allowlists for redirect targets, sanitize user inputs and avoid reflective/open redirect patterns."
+    },
+    {
+      "pattern": "RedirectLocation",
+      "severity": "Low",
+      "message": "Sanitize RedirectLocation: ensure redirect targets are validated and not user-controllable, prefer internal route mapping."
+    }
+  ],
+
+  "cdn_rule": [
+    {
+      "pattern": "Fastly|151\\.101\\.",
+      "severity": "Low",
+      "message": "Review Fastly config: validate origin shielding, purge rules and Cache-Control policies to reduce poisoning risk."
+    },
+    {
+      "pattern": "Akamai|146\\.75\\.",
+      "severity": "Low",
+      "message": "Review Akamai config: verify edge rules, origin access controls and that sensitive endpoints bypass CDN when appropriate."
+    },
+    {
+      "pattern": "Cloudflare",
+      "severity": "Low",
+      "message": "Review Cloudflare settings: confirm proxy rules, DNS records and enable WAF/bot protections for sensitive endpoints."
+    }
+  ],
+
+  "cms_plugin_rule": [
+    {
+      "pattern": "wp-content|WordPress",
+      "severity": "Medium",
+      "message": "Harden WordPress: update core/plugins/themes, remove unused plugins, enforce strong creds and restrict admin access."
+    },
+    {
+      "pattern": "Joomla",
+      "severity": "Medium",
+      "message": "Harden Joomla: apply security updates, remove demo content and restrict admin interfaces."
+    },
+    {
+      "pattern": "Drupal",
+      "severity": "Medium",
+      "message": "Harden Drupal: patch core/modules, audit contrib modules and enforce strict file permissions."
+    },
+    {
+      "pattern": "phpMyAdmin",
+      "severity": "High",
+      "message": "Restrict phpMyAdmin: limit access via IP allowlists, require strong authentication and place behind VPN or internal network."
+    },
+    {
+      "pattern": "adminer",
+      "severity": "High",
+      "message": "Restrict Adminer: remove if unnecessary or restrict to trusted hosts and require strong auth."
+    }
+  ],
+
+  "exposed_file_rule": [
+    {
+      "pattern": "robots.txt",
+      "severity": "Low",
+      "message": "Review robots.txt: avoid listing sensitive paths and enforce server-side access controls rather than relying on robots directives."
+    },
+    {
+      "pattern": "sitemap.xml",
+      "severity": "Low",
+      "message": "Review sitemap.xml: remove private endpoints and ensure sensitive routes are not indexed."
+    },
+    {
+      "pattern": "README|CHANGELOG|LICENSE",
+      "severity": "Low",
+      "message": "Sanitize public docs: remove or redact sensitive information and avoid exposing version details."
+    },
+    {
+      "pattern": "\\.(git|svn)\\/",
+      "severity": "High",
+      "message": "Protect VCS: remove .git/.svn from web root, revoke exposed keys and rotate secrets if leak suspected."
+    },
+    {
+      "pattern": "\\bbackup\\b|\\.bak|~$|\\.old",
+      "severity": "High",
+      "message": "Remove backup files: delete or move backups from public directories and rotate any credentials found."
+    }
+  ],
+
+  "directory_listing_rule": [
+    {
+      "pattern": "Index of /",
+      "severity": "High",
+      "message": "Disable directory listings: configure server to deny indexes and add index files or explicit denies for directories."
+    }
+  ],
+
+  "admin_panel_rule": [
+    {
+      "pattern": "/admin|/administrator|/wp-admin|/login|/user/login",
+      "severity": "High",
+      "message": "Protect admin endpoints: enforce MFA, strong passwords, rate limiting and IP restrictions or VPN-only access."
+    }
+  ],
+
+  "cors_rule": [
+    {
+      "pattern": "Access-Control-Allow-Origin: \\*|CORS: allow all",
+      "severity": "High",
+      "message": "Restrict CORS: replace wildcard with explicit allowed origins and validate origin header server-side for credentialed requests."
+    },
+    {
+      "pattern": "Access-Control-Allow-Credentials: true",
+      "severity": "Medium",
+      "message": "Limit credentialed CORS: ensure allowed origins are strict and do not include untrusted domains; audit endpoints accepting credentials."
+    }
+  ],
+
+  "sensitive_endpoint_rule": [
+    {
+      "pattern": "phpinfo\\(\\)|phpinfo.php",
+      "severity": "High",
+      "message": "Remove phpinfo: delete or restrict access to phpinfo pages and rotate any exposed config secrets."
+    },
+    {
+      "pattern": "/.env|environment variables",
+      "severity": "High",
+      "message": "Protect environment files: remove .env from web root, use secure secret management and rotate exposed secrets."
+    }
+  ],
+
+  "info_disclosure_rule": [
+    {
+      "pattern": "OpenSearch",
+      "severity": "Low",
+      "message": "Restrict OpenSearch: limit access, require auth and review templates for sensitive query leakage."
+    },
+    {
+      "pattern": "Server:.*version|Version:",
+      "severity": "Low",
+      "message": "Suppress version info: remove or sanitize server/version headers to reduce targeted attack surface."
+    }
+  ],
+
+  "robots_misc_rule": [
+    {
+      "pattern": "allow: /admin|disallow: /admin",
+      "severity": "Low",
+      "message": "Do not rely on robots.txt for security: secure admin paths with authentication and access controls instead."
+    }
+  ],
+
+  "defaults": {
+    "severity": "Info",
+    "message": "No direct matches found — perform manual review and apply standard hardening (patching, least privilege, monitoring)."
+  }
 }

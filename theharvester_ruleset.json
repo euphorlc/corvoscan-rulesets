@@ -3,112 +3,112 @@
     {
       "pattern": "(?i)(?:^|\\.)security(?:\\.|$)",
       "severity": "High",
-      "message": "Hostname contains 'security' — likely a sensitive/authentication asset; treat as high priority."
+      "message": "Hostname contains 'security' — review access controls, restrict exposure, and ensure strict authentication on this asset."
     },
     {
       "pattern": "(?i)(?:dev|development|sandbox)",
       "severity": "Medium",
-      "message": "Hostname indicates a development environment — these often run less-hardened builds and may expose unnecessary services."
+      "message": "Development environment detected — limit public access, disable debug features, and separate it from production systems."
     },
     {
       "pattern": "(?i)(?:test|qa|uat)",
       "severity": "Medium",
-      "message": "Test or QA environment suggested by hostname — verify that non-production systems are not externally exposed."
+      "message": "Test or QA environment found — remove external exposure and ensure no production data is present."
     },
     {
       "pattern": "(?i)(?:staging|preprod)",
       "severity": "Medium",
-      "message": "Staging environment detected — staging tends to mirror production and may reveal sensitive behavior if reachable."
+      "message": "Staging environment detected — restrict access to internal users and align security controls with production standards."
     },
     {
       "pattern": "(?i)(?:prod|production)",
       "severity": "Low",
-      "message": "Production-labelled hostname — presence is expected but usually indicates high-value targets requiring strong hardening."
+      "message": "Production-labelled hostname — verify proper hardening, logging, and monitoring to reduce risk on critical assets."
     },
     {
       "pattern": "(?i)(?:internal|\\bint\\b|intra)",
       "severity": "High",
-      "message": "Hostname suggests internal resources — internal-labelled hosts appearing in public records may signal boundary exposure."
+      "message": "Hostname indicates internal systems — ensure these are not reachable externally and enforce network segmentation."
     },
     {
       "pattern": "(?i)\\bdmz\\b",
       "severity": "Medium",
-      "message": "DMZ-labelled hostname — indicates edge systems that should be tightly monitored and isolated."
+      "message": "DMZ-labelled hostname — confirm tight firewall rules, limited services, and proper isolation from internal networks."
     },
     {
       "pattern": "(?i)\\bapi\\b",
       "severity": "Low",
-      "message": "API-labelled hostname — APIs usually expand the surface area and require consistent versioning and input validation."
+      "message": "API-related hostname — verify authentication, rate limiting, and version control to reduce misuse."
     },
     {
       "pattern": "(?i)(?:auth|login|identity)",
       "severity": "High",
-      "message": "Authentication-related naming — indicates sensitive components where weak config or exposure may have high impact."
+      "message": "Authentication-related system detected — enforce MFA, validate TLS configuration, and restrict public access."
     },
     {
       "pattern": "(?i)(?:db|database|\\bsql\\b)",
       "severity": "High",
-      "message": "Database-related naming — should generally not appear as an externally identifiable hostname."
+      "message": "Database-referenced hostname — ensure the database is not public, enforce firewall rules, and require strong authentication."
     },
     {
       "pattern": "(?i)(?:cache|redis|memcached)",
       "severity": "Medium",
-      "message": "Cache-layer naming — caching layers sometimes expose metadata or internal behavior if not properly gated."
+      "message": "Cache-layer hostname — restrict network exposure and require authentication to prevent data leakage."
     },
     {
       "pattern": "(?i)(?:legacy|old|v1|deprecated)",
       "severity": "Medium",
-      "message": "Legacy or deprecated naming — may imply outdated systems that need additional review."
+      "message": "Legacy system detected — schedule an update, apply compensating controls, and review for outdated dependencies."
     },
     {
       "pattern": "(?i)(?:backup|\\bbk\\b|mirror)",
       "severity": "Medium",
-      "message": "Hostname suggests backup or mirrored systems — these occasionally contain sensitive snapshots or outdated config."
+      "message": "Backup or mirror system — ensure no sensitive data is publicly accessible and enforce strict access controls."
     },
     {
       "pattern": "(?i)(?:static|assets|cdn)",
       "severity": "Low",
-      "message": "Static or asset distribution hostname — typically low-risk but may reveal deployment structure."
+      "message": "Static asset hostname — verify correct content-only exposure and ensure no backend files leak through this host."
     },
     {
       "pattern": "(?i)(?:mail|smtp|pop|imap)",
       "severity": "Medium",
-      "message": "Mail-related hostname — mail servers often expose metadata and require strict transport and auth configuration."
+      "message": "Mail-related host — enforce encrypted transport (TLS), block unauthenticated relays, and restrict admin interfaces."
     },
     {
       "pattern": "(?i)\\bvpn\\b",
       "severity": "High",
-      "message": "VPN-labelled hostname — external discovery of VPN endpoints may highlight access gateways."
+      "message": "VPN endpoint detected — require MFA, limit IP access where possible, and monitor for brute-force attempts."
     },
     {
       "pattern": "(?i)(?:admin|panel|dashboard)",
       "severity": "High",
-      "message": "Hostname hints at administration functionality — these should be access-restricted and monitored."
+      "message": "Administrative system detected — enforce strong authentication, IP restrictions, and minimize public exposure."
     },
     {
       "pattern": "(?i)(?:edge|gateway)",
       "severity": "Medium",
-      "message": "Gateway or edge-host naming — often part of boundary infrastructure that benefits from configuration review."
+      "message": "Edge or gateway host — review ingress rules, validate TLS settings, and ensure no unnecessary open services."
     },
     {
       "pattern": "(?i)(?:k8s|kubectl|cluster)",
       "severity": "High",
-      "message": "Cluster-related naming detected — Kubernetes-related hosts should not directly expose control surfaces."
+      "message": "Cluster-related hostname — ensure Kubernetes control plane is not public and enforce RBAC and network restrictions."
     },
     {
       "pattern": "(?i)(?:worker|node|app\\d+)",
       "severity": "Low",
-      "message": "Worker or node naming — suggests internal compute units or autoscaling groups."
+      "message": "Worker or node host — ensure these instances are internal-only and hardened according to baseline configurations."
     },
     {
       "pattern": "(?i)(?:ops|monitor|grafana|prometheus)",
       "severity": "Medium",
-      "message": "Operations or monitoring-related naming — exposure may reveal infrastructure telemetry or configuration."
+      "message": "Monitoring/operations system detected — restrict public access and require authentication for dashboards and metrics."
     }
   ],
 
   "defaults": {
     "severity": "Info",
-    "message": "No hostname pattern matched — general review recommended."
+    "message": "No hostname pattern matched — continue with routine checks and validate exposure based on role and function."
   }
 }
