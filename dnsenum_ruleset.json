@@ -5,7 +5,8 @@
       "min_count": 2,
       "hosts": [],
       "severity": "Info",
-      "message": "Multiple A records detected — verify that load balancing or CDN routing is intentional and ensure all backend nodes are patched and configured consistently."
+      "message": "Multiple A records detected",
+      "insight": "Having more than one A record usually means traffic is being load balanced or routed through a CDN. Ensure that all backend servers are properly patched and configured to avoid inconsistencies or vulnerabilities."
     }
   ],
 
@@ -14,17 +15,18 @@
       "type": "default_ns",
       "hosts": [],
       "severity": "Medium",
-      "message": "Default or ISP-provided name servers in use — switch to managed or hardened DNS providers and enforce DNSSEC to reduce manipulation and interception risks."
+      "message": "Default or ISP-provided name servers in use",
+      "insight": "Using default or ISP-managed DNS can expose you to manipulation or interception. Consider switching to managed or hardened DNS providers and enable DNSSEC to improve security."
     }
   ],
 
   "rules": [],
   "version_rules": [],
-
   "subdomain_threshold": 100,
 
   "defaults": {
     "severity": "Info",
-    "message": "No rule matched — confirm DNS records, verify exposure is intended, and review configuration for potential misconfigurations."
+    "message": "No rule matched",
+    "insight": "No issues detected based on existing rules. Confirm that DNS records are correct, exposure is intentional, and review configuration for potential misconfigurations."
   }
 }

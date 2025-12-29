@@ -4,7 +4,25 @@
       "record_type": "A",
       "pattern": "^(?:10\\.|192\\.168\\.|172\\.(?:1[6-9]|2[0-9]|3[0-1])\\.)",
       "severity": "Medium",
-      "message": "A record points to a private IP — verify that internal hosts are not exposed and update DNS to prevent accidental leakage."
+      "message": "A record resolves to a private IP",
+      "insight": "This IP is meant for internal networks. If it's publicly exposed, it may indicate a misconfiguration or internal host leak."
+    },
+    {
+      "record_type": "A",
+      "pattern": ".*",
+      "severity": "Info",
+      "message": "Multiple A records detected",
+      "insight": "Having multiple IPv4 addresses usually means traffic is being load balanced or routed through a CDN. Make sure all servers are secure and configured consistently."
+    }
+  ],
+
+  "aaaa_rule": [
+    {
+      "record_type": "AAAA",
+      "pattern": ".*",
+      "severity": "Info",
+      "message": "Multiple AAAA records detected",
+      "insight": "Multiple IPv6 addresses indicate load balancing. Ensure all backend servers are properly secured and configured consistently."
     }
   ],
 
@@ -12,17 +30,56 @@
     {
       "type": "same_priority",
       "severity": "Info",
-      "message": "MX records share the same priority — ensure all mail servers are patched, synchronized, and configured for proper load distribution."
+      "message": "Emails may be delivered to any of these servers for load balancing.",
+      "insight": "Multiple MX servers with the same priority are used for distributing email load. Ensure they are all secure and properly configured."
     },
     {
       "type": "diff_priority",
       "severity": "Info",
-      "message": "MX records have different priorities — confirm failover order and ensure backup mail servers are secured and maintained."
+      "message": "Multiple MX records with different priorities",
+      "insight": "Emails will go to the lowest-priority server first. Check that all mail servers are properly secured to avoid misdelivery or abuse."
     },
     {
       "type": "no_mx",
       "severity": "Medium",
-      "message": "Domain has no MX records — configure valid mail servers if email delivery is expected and block unintended inbound traffic."
+      "message": "No MX records found",
+      "insight": "The domain may not be configured to receive email. If email is expected, add proper MX records and secure them."
+    }
+  ],
+
+  "ns_rule": [
+    {
+      "type": "default_ns",
+      "severity": "Medium",
+      "message": "Default or ISP-provided name servers in use",
+      "insight": "Using default DNS servers can make it easier for attackers to manipulate your domain. Consider managed DNS providers and enable DNSSEC."
+    }
+  ],
+
+  "soa_rule": [
+    {
+      "type": "soa_check",
+      "severity": "Info",
+      "message": "SOA record detected",
+      "insight": "Verify the SOA record is correct with accurate contact and serial info to maintain DNS integrity."
+    }
+  ],
+
+  "txt_rule": [
+    {
+      "type": "txt_check",
+      "severity": "Info",
+      "message": "TXT records detected",
+      "insight": "TXT records may contain SPF, DKIM, or other policies. Make sure they are correct to prevent email spoofing or misconfigurations."
+    }
+  ],
+
+  "cname_rule": [
+    {
+      "type": "cname_check",
+      "severity": "Info",
+      "message": "CNAME records detected",
+      "insight": "CNAME records point one domain to another. Ensure they are correct and do not expose internal hostnames."
     }
   ],
 
@@ -30,6 +87,7 @@
 
   "defaults": {
     "severity": "Info",
-    "message": "No rule matched — verify DNS entries for correctness and ensure no unintended records are exposed."
+    "message": "No specific rule matched",
+    "insight": "No issues detected based on existing rules. Review records manually to confirm correct configuration and intended exposure."
   }
 }

@@ -1,50 +1,312 @@
 {
   "path_rules": [
-    {"status":200,"path":"^admin/?$","severity":"High","message":"Admin area is accessible — restrict access, enforce authentication, and monitor activity."},
-    {"status":200,"path":"^login/?$","severity":"Medium","message":"Login page exposed — enforce strong passwords, rate limiting, and HTTPS."},
-    {"status":200,"path":"^(?:backup|.*\\.bak)$","severity":"High","message":"Backup file or folder exposed — remove sensitive files from web root and restrict access."},
-    {"status":200,"path":"^(?:config|settings|setup)/?$","severity":"High","message":"Config folder exposed — restrict access and protect sensitive configuration."},
-    {"status":200,"path":"^(?:db|database)/?$","severity":"High","message":"Database-related file or folder exposed — restrict network access and authentication."},
-    {"status":200,"path":"^\\.git/?$","severity":"High","message":"Git repository is accessible — restrict access and remove from public directories."},
-    {"status":200,"path":"^\\.env$","severity":"Critical","message":"Environment file exposed — move outside web root and enforce file permissions."},
-    {"status":200,"path":"^logs?/?$","severity":"Medium","message":"Log files accessible — restrict access and remove sensitive info."},
-    {"status":200,"path":"^(?:test|dev|staging)/?$","severity":"Medium","message":"Test or dev folder accessible — restrict access and disable in production."},
-    {"status":200,"path":"^phpinfo\\.php$","severity":"High","message":"phpinfo exposed — remove file and restrict access to internal use."},
-    {"status":200,"path":"^(?:debug|debugger|debug\\.php)$","severity":"High","message":"Debug endpoints exposed — disable debug mode and restrict access."},
-    {"status":200,"path":"^server-status$","severity":"High","message":"Apache server-status exposed — restrict to trusted IPs and require authentication."},
-    {"status":200,"path":"^(?:\\.svn|\\.hg|\\.DS_Store)$","severity":"High","message":"Version control or hidden metadata exposed — remove from web root."},
-    {"status":200,"path":"^(?:uploads|files|media)/?$","severity":"Medium","message":"Public upload directory accessible — restrict access and validate uploads."},
-    {"status":301,"path":"^images(?:/.*)?$","severity":"Low","message":"Test only — verify directory does not contain sensitive files."},
-    {"status":200,"path":"^(?:shell\\.php|cmd\\.php)$","severity":"High","message":"Possible web shell exposed — remove immediately and audit server."},
-
-    
-    {"status":200,"path":"^composer\\.json$","severity":"High","message":"composer.json exposed — remove from public directories and restrict access."},
-    {"status":200,"path":"^composer\\.lock$","severity":"High","message":"composer.lock exposed — remove from public directories and restrict access."},
-    {"status":200,"path":"^package\\.json$","severity":"High","message":"package.json exposed — move file out of web root and restrict access."},
-    {"status":200,"path":"^package-lock\\.json$","severity":"High","message":"package-lock.json exposed — move file out of web root and restrict access."},
-    {"status":200,"path":"^yarn\\.lock$","severity":"High","message":"yarn.lock exposed — move file out of web root and restrict access."},
-    {"status":200,"path":"^node_modules/?$","severity":"High","message":"Node modules folder exposed — remove from public directories and restrict access."},
-    {"status":200,"path":"^api/?$","severity":"Medium","message":"API endpoint directory exposed — restrict access and enforce authentication."},
-    {"status":200,"path":"^api-docs/?$","severity":"Medium","message":"API documentation exposed — restrict access and require authentication."},
-    {"status":200,"path":"^swagger(?:\\.json|\\.yaml)?$","severity":"High","message":"Swagger/OpenAPI schema exposed — restrict access and enforce authentication."},
-    {"status":200,"path":"^backup\\.zip$","severity":"Critical","message":"Backup archive exposed — remove from web root and restrict access."},
-    {"status":200,"path":"^backup\\.tar(?:\\.gz)?$","severity":"Critical","message":"Backup archive exposed — remove from web root and restrict access."},
-    {"status":200,"path":"^db\\.sql$","severity":"Critical","message":"Database dump exposed — remove from public directories and enforce access control."},
-    {"status":200,"path":"^config\\.php$","severity":"High","message":"Config file exposed — move outside web root and restrict permissions."},
-    {"status":200,"path":"^settings\\.php$","severity":"High","message":"Settings file exposed — move outside web root and enforce access control."},
-    {"status":200,"path":"^database\\.php$","severity":"High","message":"Database config exposed — remove from public directories and enforce authentication."},
-    {"status":200,"path":"^\\.well-known/?$","severity":"Medium","message":".well-known directory exposed — restrict access where possible."},
-    {"status":200,"path":"^\\.vscode/?$","severity":"High","message":"VSCode project folder exposed — remove from web root and restrict access."},
-    {"status":200,"path":"^\\.idea/?$","severity":"High","message":"IDE config folder exposed — remove from web root and restrict access."},
-    {"status":200,"path":"^sitemap\\.xml$","severity":"Low","message":"Sitemap accessible — verify it does not reveal sensitive paths."},
-    {"status":200,"path":"^robots\\.txt$","severity":"Low","message":"robots.txt accessible — review disallowed paths and restrict sensitive endpoints."},
-    {"status":200,"path":"^dockerfile$","severity":"High","message":"Dockerfile exposed — remove from public directories and restrict access."},
-    {"status":200,"path":"^docker-compose\\.yml$","severity":"Critical","message":"docker-compose exposed — remove from public directories and restrict access."},
-    {"status":200,"path":"^secret(?:s)?\\.json$","severity":"Critical","message":"Secret JSON file exposed — remove from web root and enforce access control."},
-    {"status":200,"path":"^keys?\\.(?:json|pem)$","severity":"Critical","message":"Key file exposed — remove from public directories and secure keys."},
-    {"status":200,"path":"^adminer\\.php$","severity":"High","message":"Adminer panel exposed — restrict access and enforce authentication."},
-    {"status":200,"path":"^phpmyadmin/?$","severity":"High","message":"phpMyAdmin exposed — restrict access, enforce authentication, and update to latest version."},
-    {"status":200,"path":"^test\\.php$","severity":"Medium","message":"Test PHP file exposed — remove or restrict access to production environment."},
-    {"status":200,"path":"^info\\.php$","severity":"High","message":"Info script exposed — remove file and restrict access to internal use only."}
+    {
+    "status": 200,
+    "path": "^admin/?$",
+    "severity": "High",
+    "message": "Admin area is accessible",
+    "insight": "This page is meant for administrators only, but anyone can access it. You should restrict access and use strong passwords. Allowing everyone to reach this page makes it easy for attackers to try to log in and potentially take control of the website."
+  },
+  {
+    "status": 200,
+    "path": "^login/?$",
+    "severity": "Medium",
+    "message": "Login page is exposed",
+    "insight": "Anyone can see this login page, which makes it a target for attackers trying to guess passwords. Use strong passwords, HTTPS to secure connections, and limit how many times someone can try to log in to keep the site safe."
+  },
+  {
+    "status": 200,
+    "path": "^(?:backup|.*\\.bak)$",
+    "severity": "High",
+    "message": "Backup file or folder is accessible",
+    "insight": "Backups often contain important information like user data or passwords. If they are publicly accessible, anyone can download them. Move backups to a safe location and protect them with strong access rules."
+  },
+  {
+    "status": 200,
+    "path": "^(?:config|settings|setup)/?$",
+    "severity": "High",
+    "message": "Configuration folder is accessible",
+    "insight": "Configuration files can contain important settings and secrets for your website. If anyone can access them, they might learn sensitive information. Restrict access and keep these files safe from public view."
+  },
+  {
+    "status": 200,
+    "path": "^(?:db|database)/?$",
+    "severity": "High",
+    "message": "Database-related path is accessible",
+    "insight": "Database files store all your website's data. If they are exposed, attackers could steal or damage your data. Always protect database access with strong passwords and keep it hidden from the public."
+  },
+  {
+    "status": 200,
+    "path": "^\\.git/?$",
+    "severity": "High",
+    "message": "Git repository is accessible",
+    "insight": "A Git repository contains the source code of your website. If it is publicly accessible, attackers could see your code, find mistakes, or steal secrets. Remove it from public directories and restrict access to keep your code safe."
+  },
+   {
+    "status": 200,
+    "path": "^\\.env$",
+    "severity": "Critical",
+    "message": "Environment file exposed",
+    "insight": "This file often contains sensitive information like passwords and API keys. If anyone can access it, your website and services could be compromised. Move it outside the public web folder and set strict access permissions."
+  },
+  {
+    "status": 200,
+    "path": "^logs?/?$",
+    "severity": "Medium",
+    "message": "Log files accessible",
+    "insight": "Log files may contain user activity or error messages that reveal sensitive information. Restrict access so only authorized people can see them and avoid storing secrets in logs."
+  },
+  {
+    "status": 200,
+    "path": "^(?:test|dev|staging)/?$",
+    "severity": "Medium",
+    "message": "Test or dev folder accessible",
+    "insight": "Folders meant for testing or development can contain unfinished features or sensitive data. They should not be accessible to the public and should be disabled or removed in production environments."
+  },
+  {
+    "status": 200,
+    "path": "^phpinfo\\.php$",
+    "severity": "High",
+    "message": "phpinfo exposed",
+    "insight": "The phpinfo page shows detailed server information that can help attackers find weaknesses. Remove this file from public access and only allow trusted internal users if needed."
+  },
+  {
+    "status": 200,
+    "path": "^(?:debug|debugger|debug\\.php)$",
+    "severity": "High",
+    "message": "Debug endpoints exposed",
+    "insight": "Debug endpoints show internal details of your website that can be exploited. Turn off debug mode in production and restrict access to trusted users only."
+  },
+  {
+    "status": 200,
+    "path": "^server-status$",
+    "severity": "High",
+    "message": "Apache server-status exposed",
+    "insight": "This page shows server activity and configuration details. If public, attackers can use it to plan attacks. Limit access to trusted IPs and require authentication."
+  },
+  {
+    "status": 200,
+    "path": "^(?:\\.svn|\\.hg|\\.DS_Store)$",
+    "severity": "High",
+    "message": "Version control or hidden metadata exposed",
+    "insight": "These hidden files are not meant to be public and may reveal source code or system details. Remove them from the web folder to prevent attackers from learning how your site is built."
+  },
+  {
+    "status": 200,
+    "path": "^(?:uploads|files|media)/?$",
+    "severity": "Medium",
+    "message": "Public upload directory accessible",
+    "insight": "This folder allows files to be accessed by anyone. Without proper checks, attackers could upload harmful files. Restrict access and make sure only safe file types are allowed."
+  },
+  {
+    "status": 301,
+    "path": "^images(?:/.*)?$",
+    "severity": "Low",
+    "message": "Test only — directory accessible",
+    "insight": "This directory appears accessible but is likely meant for public images. Make sure it does not contain sensitive or private files by mistake."
+  },
+  {
+    "status": 200,
+    "path": "^(?:shell\\.php|cmd\\.php)$",
+    "severity": "High",
+    "message": "Possible web shell exposed",
+    "insight": "These files may allow attackers to run commands on your server. Remove them immediately and review the server for any signs of compromise."
+  },
+  {
+    "status": 200,
+    "path": "^composer\\.json$",
+    "severity": "High",
+    "message": "composer.json exposed",
+    "insight": "This file shows which PHP packages your project uses. If public, attackers can see your dependencies and potentially find vulnerabilities. Move it out of public directories and restrict access."
+  },
+  {
+    "status": 200,
+    "path": "^composer\\.lock$",
+    "severity": "High",
+    "message": "composer.lock exposed",
+    "insight": "This file locks specific versions of your PHP packages. Exposing it can help attackers find exact library versions to target. Keep it outside the web root and limit access."
+  },
+  {
+    "status": 200,
+    "path": "^package\\.json$",
+    "severity": "High",
+    "message": "package.json exposed",
+    "insight": "This file lists JavaScript project dependencies. Public access can reveal your libraries and versions, helping attackers find weaknesses. Move it out of the web root and restrict access."
+  },
+  {
+    "status": 200,
+    "path": "^package-lock\\.json$",
+    "severity": "High",
+    "message": "package-lock.json exposed",
+    "insight": "This file locks exact versions of JavaScript dependencies. Exposing it allows attackers to know the exact versions used, which could be exploited. Keep it secure and away from public access."
+  },
+  {
+    "status": 200,
+    "path": "^yarn\\.lock$",
+    "severity": "High",
+    "message": "yarn.lock exposed",
+    "insight": "Like package-lock.json, this file locks your JavaScript dependencies. Public exposure can help attackers identify vulnerabilities in specific versions. Restrict access and move it out of public directories."
+  },
+  {
+    "status": 200,
+    "path": "^node_modules/?$",
+    "severity": "High",
+    "message": "Node modules folder exposed",
+    "insight": "This folder contains all your installed JavaScript packages. If accessible publicly, attackers can see your full code dependencies and possibly exploit known issues. Remove it from public directories."
+  },
+  {
+    "status": 200,
+    "path": "^api/?$",
+    "severity": "Medium",
+    "message": "API endpoint directory exposed",
+    "insight": "APIs may contain sensitive operations. If exposed without authentication, attackers could misuse them. Restrict access and enforce proper authentication for all endpoints."
+  },
+  {
+    "status": 200,
+    "path": "^api-docs/?$",
+    "severity": "Medium",
+    "message": "API documentation exposed",
+    "insight": "This documentation shows how your API works and can help attackers understand your system. Restrict access and require authentication to keep it private."
+  },
+  {
+    "status": 200,
+    "path": "^swagger(?:\\.json|\\.yaml)?$",
+    "severity": "High",
+    "message": "Swagger/OpenAPI schema exposed",
+    "insight": "The schema reveals details about your API endpoints, parameters, and responses. If public, attackers can plan attacks more easily. Limit access and require authentication."
+  },
+  {
+    "status": 200,
+    "path": "^backup\\.zip$",
+    "severity": "Critical",
+    "message": "Backup archive exposed",
+    "insight": "Backup files often contain sensitive data like user information and passwords. If accessible publicly, anyone can download it. Move backups out of the web root and restrict access."
+  },
+  {
+    "status": 200,
+    "path": "^backup\\.tar(?:\\.gz)?$",
+    "severity": "Critical",
+    "message": "Backup archive exposed",
+    "insight": "Like other backup files, this archive may contain critical information. Keep it secure outside public directories and enforce strict access controls."
+  },
+  {
+    "status": 200,
+    "path": "^db\\.sql$",
+    "severity": "Critical",
+    "message": "Database dump exposed",
+    "insight": "Database dumps contain all your website’s data. Public access could let attackers steal or manipulate information. Remove it from public directories and restrict access."
+  },
+  {
+    "status": 200,
+    "path": "^config\\.php$",
+    "severity": "High",
+    "message": "Config file exposed",
+    "insight": "Configuration files can include passwords and settings. Public exposure makes it easy for attackers to exploit your site. Move it out of the web root and set proper file permissions."
+  },
+  {
+    "status": 200,
+    "path": "^settings\\.php$",
+    "severity": "High",
+    "message": "Settings file exposed",
+    "insight": "Settings files may contain sensitive configurations. Keep them out of public access and enforce strict access control."
+  },
+  {
+    "status": 200,
+    "path": "^database\\.php$",
+    "severity": "High",
+    "message": "Database config exposed",
+    "insight": "This file contains database credentials and connection details. Public access can allow attackers to access your database. Move it out of the web root and enforce authentication."
+  },
+  {
+    "status": 200,
+    "path": "^\\.well-known/?$",
+    "severity": "Medium",
+    "message": ".well-known directory exposed",
+    "insight": "This directory may contain files for security and verification purposes. Limit access where possible to avoid exposing sensitive information."
+  },
+  {
+    "status": 200,
+    "path": "^\\.vscode/?$",
+    "severity": "High",
+    "message": "VSCode project folder exposed",
+    "insight": "VSCode folders can contain project-specific settings or secrets. Keep them out of public directories to prevent attackers from learning about your development environment."
+  },
+  {
+    "status": 200,
+    "path": "^\\.idea/?$",
+    "severity": "High",
+    "message": "IDE config folder exposed",
+    "insight": "IDE folders like .idea may reveal project configurations or sensitive info. Remove them from web-accessible paths and restrict access."
+  },
+  {
+    "status": 200,
+    "path": "^sitemap\\.xml$",
+    "severity": "Low",
+    "message": "Sitemap accessible",
+    "insight": "Sitemaps help search engines, but they can also reveal website structure. Verify it does not expose sensitive paths or areas meant to be private."
+  },
+  {
+    "status": 200,
+    "path": "^robots\\.txt$",
+    "severity": "Low",
+    "message": "robots.txt accessible",
+    "insight": "This file guides search engines but may list directories you want hidden. Review its contents and avoid exposing sensitive endpoints."
+  },
+  {
+    "status": 200,
+    "path": "^dockerfile$",
+    "severity": "High",
+    "message": "Dockerfile exposed",
+    "insight": "Dockerfiles may contain environment setups and credentials. If public, attackers can see how your environment is configured. Move it out of web root and restrict access."
+  },
+    {
+    "status": 200,
+    "path": "^docker-compose\\.yml$",
+    "severity": "Critical",
+    "message": "docker-compose exposed",
+    "insight": "This file contains service definitions and possibly environment variables. Public access can reveal sensitive info about your system setup. Move it out of public directories and restrict access."
+  },
+  {
+    "status": 200,
+    "path": "^secret(?:s)?\\.json$",
+    "severity": "Critical",
+    "message": "Secret JSON file exposed",
+    "insight": "Secret JSON files may include API keys or passwords. Anyone accessing them can compromise your system. Remove them from the web root and enforce strict access control."
+  },
+  {
+    "status": 200,
+    "path": "^keys?\\.(?:json|pem)$",
+    "severity": "Critical",
+    "message": "Key file exposed",
+    "insight": "Key files contain private credentials used for authentication or encryption. Public exposure can lead to full system compromise. Secure them and remove from public directories."
+  },
+  {
+    "status": 200,
+    "path": "^adminer\\.php$",
+    "severity": "High",
+    "message": "Adminer panel exposed",
+    "insight": "Adminer allows database management. If publicly accessible, attackers can try to access your databases. Restrict access and enforce strong authentication."
+  },
+  {
+    "status": 200,
+    "path": "^phpmyadmin/?$",
+    "severity": "High",
+    "message": "phpMyAdmin exposed",
+    "insight": "phpMyAdmin is a database management tool. Public access can let attackers attempt login attacks or exploit vulnerabilities. Restrict access, enforce authentication, and keep it updated."
+  },
+  {
+    "status": 200,
+    "path": "^test\\.php$",
+    "severity": "Medium",
+    "message": "Test PHP file exposed",
+    "insight": "Test files are meant for development and may contain code for debugging. Exposing them in production can reveal system behavior. Remove or restrict access."
+  },
+  {
+    "status": 200,
+    "path": "^info\\.php$",
+    "severity": "High",
+    "message": "Info script exposed",
+    "insight": "Info scripts show server and PHP configuration details. Public access can help attackers find weaknesses. Remove the file or restrict access to trusted internal users only."
+  }
   ]
 }

@@ -3,27 +3,32 @@
     {
       "pattern": "Varnish",
       "severity": "Medium",
-      "message": "Harden Varnish: review VCL policies, restrict/pin purge endpoints, validate cache keys and sanitize forwarded headers."
+      "message": "Varnish detected",
+      "insight": "Check VCL policies, restrict purge endpoints and validate cache keys → Misconfigured Varnish could let attackers bypass caching rules or view sensitive data."
     },
     {
       "pattern": "nginx",
       "severity": "Low",
-      "message": "Harden nginx: remove default pages, disable unused modules, enforce strict file permissions and keep packages updated."
+      "message": "nginx detected",
+      "insight": "Remove default pages, disable unused modules and enforce strict file permissions → Weak configuration can expose server info or files."
     },
     {
       "pattern": "Apache",
       "severity": "Low",
-      "message": "Harden Apache: disable directory listings, remove sample sites, limit modules, and apply security headers and updates."
+      "message": "Apache detected",
+      "insight": "Disable directory listings, remove sample sites, limit modules and apply security headers → Helps prevent attackers from discovering files or exploiting modules."
     },
     {
       "pattern": "Microsoft-IIS|IIS",
       "severity": "Medium",
-      "message": "Harden IIS: apply latest patches, remove default content, restrict management endpoints and enforce least-privilege access."
+      "message": "IIS detected",
+      "insight": "Apply latest patches, remove default content, and restrict management endpoints → Unpatched IIS can be exploited and default content may reveal info to attackers."
     },
     {
       "pattern": "x-powered-by|X-Powered-By",
       "severity": "Low",
-      "message": "Remove X-Powered-By header: disable version headers in app/server config to reduce fingerprinting."
+      "message": "X-Powered-By header found",
+      "insight": "Remove version headers in server/app config → Revealing framework versions helps attackers target known vulnerabilities."
     }
   ],
 
@@ -31,27 +36,32 @@
     {
       "pattern": "Missing: Strict-Transport-Security|missing HSTS|no Strict-Transport-Security",
       "severity": "Medium",
-      "message": "Enable HSTS: add a Strict-Transport-Security header with appropriate max-age (+ preload if applicable) and includeSubDomains where needed."
+      "message": "HSTS missing",
+      "insight": "Add Strict-Transport-Security → Without HSTS, users may connect over HTTP, allowing attackers to intercept data."
     },
     {
       "pattern": "Missing: Content-Security-Policy|missing Content-Security-Policy|no Content-Security-Policy",
       "severity": "Medium",
-      "message": "Implement CSP: create a Content-Security-Policy to restrict script/style sources and reduce XSS risk; test in report-only mode first."
+      "message": "CSP missing",
+      "insight": "Implement Content-Security-Policy → Helps prevent cross-site scripting (XSS) attacks by restricting allowed sources."
     },
     {
       "pattern": "Missing: X-Frame-Options|missing X-Frame-Options|no X-Frame-Options",
       "severity": "Medium",
-      "message": "Prevent clickjacking: add X-Frame-Options or use frame-ancestors in CSP to restrict which origins may frame the site."
+      "message": "X-Frame-Options missing",
+      "insight": "Add X-Frame-Options → Prevents attackers from embedding your site in another page to perform clickjacking attacks."
     },
     {
       "pattern": "Missing: X-Content-Type-Options|missing X-Content-Type-Options",
       "severity": "Low",
-      "message": "Set X-Content-Type-Options: add 'nosniff' header to prevent MIME-type sniffing."
+      "message": "X-Content-Type-Options missing",
+      "insight": "Add 'nosniff' → Prevents browsers from interpreting files as a different MIME type, reducing risk of attacks."
     },
     {
       "pattern": "Missing: Referrer-Policy|missing Referrer-Policy",
       "severity": "Low",
-      "message": "Define Referrer-Policy: add an appropriate policy (e.g., no-referrer-when-downgrade or strict-origin-when-cross-origin) to limit referrer leakage."
+      "message": "Referrer-Policy missing",
+      "insight": "Add a referrer policy → Helps limit the amount of information shared about user navigation between sites."
     }
   ],
 
@@ -59,22 +69,26 @@
     {
       "pattern": "self-signed|Self-Signed",
       "severity": "High",
-      "message": "Replace self-signed cert: obtain a trusted CA certificate and configure clients/servers to trust only valid CAs."
+      "message": "Self-signed certificate detected",
+      "insight": "Replace with trusted CA certificate → Self-signed certificates are not trusted by browsers and can allow attackers to intercept data."
     },
     {
       "pattern": "expired certificate|Certificate expired",
       "severity": "High",
-      "message": "Renew certificate: replace expired certs immediately and implement monitoring/automation for renewals."
+      "message": "Expired certificate detected",
+      "insight": "Renew certificate → Expired certificates make your site appear untrusted and could let attackers intercept traffic."
     },
     {
       "pattern": "TLS 1.0|SSLv3|SSL 3.0|TLSv1",
       "severity": "High",
-      "message": "Disable weak protocols: configure server to support TLS 1.2+ only, remove SSLv3/TLS1.0, and verify with a TLS scanner."
+      "message": "Weak TLS/SSL protocol detected",
+      "insight": "Disable old protocols and use TLS 1.2+ → Old protocols are insecure and can let attackers break encryption."
     },
     {
       "pattern": "missing HSTS|preload not present|includeSubDomains not present",
       "severity": "Medium",
-      "message": "Enforce HSTS correctly: add Strict-Transport-Security with includeSubDomains and consider preloading after testing."
+      "message": "HSTS misconfigured",
+      "insight": "Add Strict-Transport-Security with includeSubDomains → Proper HSTS ensures browsers only connect via HTTPS."
     }
   ],
 
@@ -82,12 +96,14 @@
     {
       "pattern": "Cookie",
       "severity": "Medium",
-      "message": "Harden cookies: set Secure and HttpOnly flags and scope cookie paths to reduce exposure."
+      "message": "Cookie detected",
+      "insight": "Set Secure and HttpOnly flags → Protects cookies from being stolen by attackers over unencrypted connections or scripts."
     },
     {
       "pattern": "session|sessid|auth|token",
       "severity": "High",
-      "message": "Protect session cookies: enforce Secure, HttpOnly, SameSite, rotate session IDs on privilege changes and validate expiry."
+      "message": "Session cookie detected",
+      "insight": "Enforce Secure, HttpOnly, SameSite and rotate IDs → Prevents attackers from hijacking user sessions."
     }
   ],
 
@@ -95,177 +111,26 @@
     {
       "pattern": "x-served-by",
       "severity": "Low",
-      "message": "Remove internal headers: strip X-Served-By in proxies or mask internal node identifiers to avoid information leakage."
+      "message": "X-Served-By header found",
+      "insight": "Remove or mask internal headers → Revealing server identifiers can help attackers plan attacks."
     },
     {
       "pattern": "x-timer",
       "severity": "Low",
-      "message": "Remove timing headers: disable X-Timer to avoid exposing backend timing/diagnostic details."
+      "message": "X-Timer header found",
+      "insight": "Disable diagnostic headers → Exposed timing info can give attackers insight into server performance."
     },
     {
       "pattern": "x-cache-hits",
       "severity": "Low",
-      "message": "Limit cache detail headers: remove or restrict X-Cache-Hits to avoid disclosing caching behavior."
+      "message": "X-Cache-Hits header found",
+      "insight": "Restrict cache headers → Helps prevent attackers from learning caching behavior."
     },
     {
       "pattern": "server:.*\\(internal|trace|debug",
       "severity": "Low",
-      "message": "Sanitize Server header: avoid embedding debug/internal strings and remove unnecessary server metadata."
+      "message": "Server header exposes debug info",
+      "insight": "Sanitize server header → Hides internal info to reduce attack surface."
     }
-  ],
-
-  "redirect_rule": [
-    {
-      "pattern": "301 Moved Permanently|302 Found|307 Temporary Redirect",
-      "severity": "Low",
-      "message": "Validate redirects: ensure targets are trusted, implement allowlists and avoid reflective/open redirect patterns."
-    },
-    {
-      "pattern": "RedirectLocation",
-      "severity": "Low",
-      "message": "Validate RedirectLocation: sanitize user-controlled redirect targets and use allowlists where possible."
-    }
-  ],
-
-  "cdn_rule": [
-    {
-      "pattern": "Fastly|151\\.101\\.",
-      "severity": "Low",
-      "message": "Review Fastly config: confirm origin validation, purge rules, and cache-control headers to prevent poisoning."
-    },
-    {
-      "pattern": "Akamai|146\\.75\\.",
-      "severity": "Low",
-      "message": "Review Akamai config: verify edge rules, origin ACLs and ensure sensitive endpoints are origin-only."
-    },
-    {
-      "pattern": "Cloudflare",
-      "severity": "Low",
-      "message": "Review Cloudflare settings: confirm proxy rules, DNS records, and set security features (WAF, bot management) appropriately."
-    }
-  ],
-
-  "cms_plugin_rule": [
-    {
-      "pattern": "wp-content|WordPress",
-      "severity": "Medium",
-      "message": "Harden WordPress: update core/plugins/themes, remove unused plugins, enforce strong credentials and principle of least privilege."
-    },
-    {
-      "pattern": "Joomla",
-      "severity": "Medium",
-      "message": "Harden Joomla: update core/extensions, remove default accounts, and restrict admin access."
-    },
-    {
-      "pattern": "Drupal",
-      "severity": "Medium",
-      "message": "Harden Drupal: apply security updates, audit modules, and enforce file permission best practices."
-    },
-    {
-      "pattern": "phpMyAdmin",
-      "severity": "High",
-      "message": "Restrict phpMyAdmin: limit access via IP allowlists, require strong auth, and place behind VPN or internal-only network."
-    },
-    {
-      "pattern": "adminer",
-      "severity": "High",
-      "message": "Restrict Adminer: remove or restrict to trusted hosts, enforce authentication and monitor access."
-    }
-  ],
-
-  "exposed_file_rule": [
-    {
-      "pattern": "robots.txt",
-      "severity": "Low",
-      "message": "Review robots.txt: avoid listing sensitive paths; use server-side controls for access protection."
-    },
-    {
-      "pattern": "sitemap.xml",
-      "severity": "Low",
-      "message": "Review sitemap.xml: ensure it doesn't expose private endpoints; restrict or remove entries if needed."
-    },
-    {
-      "pattern": "README|CHANGELOG|LICENSE",
-      "severity": "Low",
-      "message": "Remove sensitive docs: relocate README/CHANGELOG or sanitize them to avoid exposing internal info or versions."
-    },
-    {
-      "pattern": "\\.(git|svn)\\/",
-      "severity": "High",
-      "message": "Protect VCS data: remove .git/.svn from web root, revoke exposed credentials and rotate secrets if leaked."
-    },
-    {
-      "pattern": "\\bbackup\\b|\\.bak|~$|\\.old",
-      "severity": "High",
-      "message": "Remove backup files: delete or move backups from public directories and rotate any exposed secrets."
-    }
-  ],
-
-  "directory_listing_rule": [
-    {
-      "pattern": "Index of /",
-      "severity": "High",
-      "message": "Disable directory listings: configure server to deny indexes and add index files where necessary."
-    }
-  ],
-
-  "admin_panel_rule": [
-    {
-      "pattern": "/admin|/administrator|/wp-admin|/login|/user/login",
-      "severity": "High",
-      "message": "Protect admin endpoints: enforce MFA, rate-limit logins, use IP restrictions or VPN access."
-    }
-  ],
-
-  "cors_rule": [
-    {
-      "pattern": "Access-Control-Allow-Origin: \\*|CORS: allow all",
-      "severity": "High",
-      "message": "Restrict CORS: replace wildcard with explicit allowed origins and validate requests server-side."
-    },
-    {
-      "pattern": "Access-Control-Allow-Credentials: true",
-      "severity": "Medium",
-      "message": "Limit credentialed CORS: ensure allowed origins are strict and do not include untrusted domains."
-    }
-  ],
-
-  "sensitive_endpoint_rule": [
-    {
-      "pattern": "phpinfo\\(\\)|phpinfo.php",
-      "severity": "High",
-      "message": "Remove phpinfo: delete or restrict access to phpinfo pages and rotate any exposed config secrets."
-    },
-    {
-      "pattern": "/.env|environment variables",
-      "severity": "High",
-      "message": "Protect environment files: remove .env from web root, use environment injection securely and rotate leaked secrets."
-    }
-  ],
-
-  "info_disclosure_rule": [
-    {
-      "pattern": "OpenSearch",
-      "severity": "Low",
-      "message": "Limit OpenSearch exposure: restrict access and ensure templates do not leak sensitive queries or endpoints."
-    },
-    {
-      "pattern": "Server:.*version|Version:",
-      "severity": "Low",
-      "message": "Remove version strings: suppress or sanitize server/version headers to reduce targeted attack surface."
-    }
-  ],
-
-  "robots_misc_rule": [
-    {
-      "pattern": "allow: /admin|disallow: /admin",
-      "severity": "Low",
-      "message": "Avoid exposing admin via robots: do not rely on robots.txt for protection; secure admin paths via access control."
-    }
-  ],
-
-  "defaults": {
-    "severity": "Info",
-    "message": "No direct matches — perform manual review and follow standard hardening and exposure checks."
-  }
+  ]
 }

@@ -3,112 +3,133 @@
     {
       "pattern": "(?i)(?:^|\\.)security(?:\\.|$)",
       "severity": "High",
-      "message": "Hostname contains 'security' — review access controls, restrict exposure, and ensure strict authentication on this asset."
+      "message": "Security system detected",
+      "insight": "Review access controls, restrict exposure, and enforce strict authentication → Critical security systems could be compromised, risking data breaches or unauthorized access."
     },
     {
       "pattern": "(?i)(?:dev|development|sandbox)",
       "severity": "Medium",
-      "message": "Development environment detected — limit public access, disable debug features, and separate it from production systems."
+      "message": "Development environment detected",
+      "insight": "Limit public access, disable debug features, and separate from production → Development environments exposed publicly may leak sensitive data or allow attacker footholds."
     },
     {
       "pattern": "(?i)(?:test|qa|uat)",
       "severity": "Medium",
-      "message": "Test or QA environment found — remove external exposure and ensure no production data is present."
+      "message": "Test or QA environment detected",
+      "insight": "Remove external exposure and ensure no production data is present → Test/QA systems could leak sensitive information or be used for attacks if exposed."
     },
     {
       "pattern": "(?i)(?:staging|preprod)",
       "severity": "Medium",
-      "message": "Staging environment detected — restrict access to internal users and align security controls with production standards."
+      "message": "Staging environment detected",
+      "insight": "Restrict access to internal users and align security controls with production standards → Staging systems may serve as attack vectors if not properly secured."
     },
     {
       "pattern": "(?i)(?:prod|production)",
       "severity": "Low",
-      "message": "Production-labelled hostname — verify proper hardening, logging, and monitoring to reduce risk on critical assets."
+      "message": "Production system detected",
+      "insight": "Verify hardening, logging, and monitoring → Misconfigurations could expose critical production services."
     },
     {
       "pattern": "(?i)(?:internal|\\bint\\b|intra)",
       "severity": "High",
-      "message": "Hostname indicates internal systems — ensure these are not reachable externally and enforce network segmentation."
+      "message": "Internal system detected",
+      "insight": "Ensure systems are not externally reachable and enforce network segmentation → Internal systems exposure could lead to unauthorized access and lateral movement."
     },
     {
       "pattern": "(?i)\\bdmz\\b",
       "severity": "Medium",
-      "message": "DMZ-labelled hostname — confirm tight firewall rules, limited services, and proper isolation from internal networks."
+      "message": "DMZ system detected",
+      "insight": "Confirm firewall rules, limit services, and ensure isolation from internal networks → Misconfigured DMZ systems could provide entry points to internal networks."
     },
     {
       "pattern": "(?i)\\bapi\\b",
       "severity": "Low",
-      "message": "API-related hostname — verify authentication, rate limiting, and version control to reduce misuse."
+      "message": "API system detected",
+      "insight": "Verify authentication, rate limiting, and version control → Exposed APIs may be abused or allow data leakage if not secured."
     },
     {
       "pattern": "(?i)(?:auth|login|identity)",
       "severity": "High",
-      "message": "Authentication-related system detected — enforce MFA, validate TLS configuration, and restrict public access."
+      "message": "Authentication system detected",
+      "insight": "Enforce MFA, validate TLS configuration, and restrict public access → Authentication systems exposure could allow unauthorized access to accounts and sensitive data."
     },
     {
       "pattern": "(?i)(?:db|database|\\bsql\\b)",
       "severity": "High",
-      "message": "Database-referenced hostname — ensure the database is not public, enforce firewall rules, and require strong authentication."
+      "message": "Database system detected",
+      "insight": "Ensure database is not public, enforce firewall rules, and require strong authentication → Publicly accessible databases could result in data leaks or full compromise."
     },
     {
       "pattern": "(?i)(?:cache|redis|memcached)",
       "severity": "Medium",
-      "message": "Cache-layer hostname — restrict network exposure and require authentication to prevent data leakage."
+      "message": "Cache system detected",
+      "insight": "Restrict network exposure and require authentication → Exposed cache systems could leak data or allow attackers to manipulate application state."
     },
     {
       "pattern": "(?i)(?:legacy|old|v1|deprecated)",
       "severity": "Medium",
-      "message": "Legacy system detected — schedule an update, apply compensating controls, and review for outdated dependencies."
+      "message": "Legacy system detected",
+      "insight": "Schedule updates, apply compensating controls, and review dependencies → Legacy systems may contain vulnerabilities that could be exploited."
     },
     {
       "pattern": "(?i)(?:backup|\\bbk\\b|mirror)",
       "severity": "Medium",
-      "message": "Backup or mirror system — ensure no sensitive data is publicly accessible and enforce strict access controls."
+      "message": "Backup system detected",
+      "insight": "Ensure no sensitive data is publicly accessible and enforce strict access controls → Backup/mirror systems exposed could leak sensitive information."
     },
     {
       "pattern": "(?i)(?:static|assets|cdn)",
       "severity": "Low",
-      "message": "Static asset hostname — verify correct content-only exposure and ensure no backend files leak through this host."
+      "message": "Static asset system detected",
+      "insight": "Verify content-only exposure and prevent backend file leaks → Misconfigured static asset hosts may unintentionally expose files or code."
     },
     {
       "pattern": "(?i)(?:mail|smtp|pop|imap)",
       "severity": "Medium",
-      "message": "Mail-related host — enforce encrypted transport (TLS), block unauthenticated relays, and restrict admin interfaces."
+      "message": "Mail system detected",
+      "insight": "Enforce encrypted transport (TLS), block unauthenticated relays, and restrict admin interfaces → Misconfigured mail servers could be used for spam, phishing, or data exfiltration."
     },
     {
       "pattern": "(?i)\\bvpn\\b",
       "severity": "High",
-      "message": "VPN endpoint detected — require MFA, limit IP access where possible, and monitor for brute-force attempts."
+      "message": "VPN endpoint detected",
+      "insight": "Require MFA, limit IP access, and monitor brute-force attempts → Exposed VPN endpoints could allow attackers to access internal networks."
     },
     {
       "pattern": "(?i)(?:admin|panel|dashboard)",
       "severity": "High",
-      "message": "Administrative system detected — enforce strong authentication, IP restrictions, and minimize public exposure."
+      "message": "Administrative system detected",
+      "insight": "Enforce strong authentication, IP restrictions, and minimize public exposure → Administrative systems could be compromised, giving full control over systems."
     },
     {
       "pattern": "(?i)(?:edge|gateway)",
       "severity": "Medium",
-      "message": "Edge or gateway host — review ingress rules, validate TLS settings, and ensure no unnecessary open services."
+      "message": "Edge or gateway system detected",
+      "insight": "Review ingress rules, validate TLS, and limit open services → Misconfigured edge hosts may expose internal networks or allow attacks."
     },
     {
       "pattern": "(?i)(?:k8s|kubectl|cluster)",
       "severity": "High",
-      "message": "Cluster-related hostname — ensure Kubernetes control plane is not public and enforce RBAC and network restrictions."
+      "message": "Cluster system detected",
+      "insight": "Ensure Kubernetes control plane is not public, enforce RBAC and network restrictions → Exposed clusters could allow attackers to control containers and workloads."
     },
     {
       "pattern": "(?i)(?:worker|node|app\\d+)",
       "severity": "Low",
-      "message": "Worker or node host — ensure these instances are internal-only and hardened according to baseline configurations."
+      "message": "Worker or node system detected",
+      "insight": "Ensure instances are internal-only and hardened → Misconfigured worker nodes may be exploited or provide entry points to the environment."
     },
     {
       "pattern": "(?i)(?:ops|monitor|grafana|prometheus)",
       "severity": "Medium",
-      "message": "Monitoring/operations system detected — restrict public access and require authentication for dashboards and metrics."
+      "message": "Monitoring system detected",
+      "insight": "Restrict public access and require authentication for dashboards → Exposed monitoring systems could leak operational data or allow attackers to manipulate monitoring."
     }
   ],
-
   "defaults": {
     "severity": "Info",
-    "message": "No hostname pattern matched — continue with routine checks and validate exposure based on role and function."
+    "message": "No hostname pattern detected",
+    "insight": "No hostname pattern matched → Continue routine checks; unverified systems may still have security gaps."
   }
 }
